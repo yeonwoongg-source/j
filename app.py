@@ -88,17 +88,17 @@ elif st.session_state.screen == "select":
 
     c1, c2, c3 = st.columns(3)
 
-    with c1:
-        if st.button("✌️", use_container_width=True):
-            st.session_state.player = "가위"
-
+   with c1:
+    if st.button("✌️"):
+        st.session_state.player = "가위"
+        
     with c2:
-        if st.button("✊", use_container_width=True):
-            st.session_state.player = "바위"
-
+    if st.button("✊"):
+        st.session_state.player = "바위"
+        
     with c3:
-        if st.button("✋", use_container_width=True):
-            st.session_state.player = "보"
+    if st.button("✋"):
+        st.session_state.player = "보"
 
     if st.session_state.player != "":
         st.session_state.computer = random.choice(["가위", "바위", "보"])
