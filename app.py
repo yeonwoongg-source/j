@@ -16,34 +16,33 @@ body {
     background-color: white;
 }
 
-/* 전체 텍스트 */
 h1, h2, h3, p {
     color: black;
     text-align: center;
 }
 
-/* 🔥 버튼 크기 크게 */
+/* ✅ 기본 버튼 (시작하기, 돌아가기) */
 div.stButton > button {
-    width: 180px;
-    height: 180px;
-    font-size: 90px;   /* 이모티콘 크기 */
-    border-radius: 25px;
-    border: 3px solid black;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: 2px solid black;
     background-color: white;
     color: black;
-    cursor: pointer;
-    transition: 0.2s;
+    border-radius: 10px;
 }
 
-/* hover 효과 */
-div.stButton > button:hover {
+/* 🔥 가위바위보 선택 버튼만 크게 */
+.big-btn button {
+    width: 180px !important;
+    height: 180px !important;
+    font-size: 90px !important;
+    border-radius: 25px !important;
+}
+
+/* hover */
+.big-btn button:hover {
     background-color: #f0f0f0;
     transform: scale(1.05);
-}
-
-/* 버튼 안 이모티콘 더 강조 */
-div.stButton > button p {
-    font-size: 90px !important;
 }
 </style>
 """, unsafe_allow_html=True)
