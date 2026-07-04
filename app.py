@@ -1,162 +1,141 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>가위바위보 게임</title>
+import streamlit as st
+import random
 
+# 페이지 설정
+st.set_page_config(page_title="가위바위보 게임", layout="centered")
+
+# 배경색과 글씨색
+st.markdown("""
 <style>
-body{
-    margin:0;
-    background:white;
-    color:black;
-    font-family:Arial, sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
+body {
+    background-color: white;
+    color: black;
 }
-
-#app{
-    text-align:center;
-    width:100%;
+.stApp {
+    background-color: white;
 }
-
-button{
-    padding:15px 30px;
-    font-size:20px;
-    cursor:pointer;
-    margin:10px;
-    border:2px solid black;
-    background:white;
-    border-radius:10px;
+h1, h2, h3, p {
+    color: black;
+    text-align: center;
 }
-
-.choice{
-    font-size:45px;
-    width:90px;
-    height:90px;
-}
-
-#choices{
-    display:none;
-}
-
-#resultArea{
-    display:none;
-    margin-top:30px;
-}
-
-.emoji{
-    font-size:90px;
-    margin:20px;
-}
-
-#computer{
-    margin-bottom:40px;
-}
-
-#player{
-    margin-top:40px;
-}
-
-#result{
-    font-size:40px;
-    font-weight:bold;
+div.stButton > button {
+    display: block;
+    margin: auto;
+    font-size: 24px;
+    padding: 10px 25px;
 }
 </style>
-</head>
+""", unsafe_allow_html=True)
 
-<body>
+# 세션 상태 초기화
+if "screen" not in st.session_state:
+    st.session_state.screen = "start"
 
-<div id="app">
+if "player" not in st.session_state:
+    st.session_state.player = ""
 
-    <div id="startScreen">
-        <button id="startBtn">시작하기</button>
-    </div>
+if "computer" not in st.session_state:
+    st.session_state.computer = ""
 
-    <div id="choices">
-        <button class="choice" onclick="play('가위')">✌️</button>
-        <button class="choice" onclick="play('바위')">✊</button>
-        <button class="choice" onclick="play('보')">✋</button>
-    </div>
+if "result" not in st.session_state:
+    st.session_state.result = ""
 
-    <div id="resultArea">
-
-        <div id="computer" class="emoji"></div>
-
-        <div id="result"></div>
-
-        <div id="player" class="emoji"></div>
-
-        <button onclick="resetGame()">돌아가기</button>
-
-    </div>
-
-</div>
-
-<script>
-
-const emoji={
-    "가위":"✌️",
-    "바위":"✊",
-    "보":"✋"
-};
-
-document.getElementById("startBtn").onclick=function(){
-    document.getElementById("startScreen").style.display="none";
-    document.getElementById("choices").style.display="block";
-};
-
-function play(player){
-
-    const list=["가위","바위","보"];
-    const computer=list[Math.floor(Math.random()*3)];
-
-    document.getElementById("choices").style.display="none";
-    document.getElementById("resultArea").style.display="block";
-
-    document.getElementById("computer").innerHTML=emoji[computer];
-    document.getElementById("player").innerHTML=emoji[player];
-
-    let result="무승부";
-
-    if(player==="가위"){
-        if(computer==="바위"){
-            result="패배";
-        }else if(computer==="보"){
-            result="승리";
-        }
-    }
-
-    else if(player==="바위"){
-        if(computer==="가위"){
-            result="승리";
-        }else if(computer==="보"){
-            result="패배";
-        }
-    }
-
-    else if(player==="보"){
-        if(computer==="가위"){
-            result="패배";
-        }else if(computer==="바위"){
-            result="승리";
-        }
-    }
-
-    document.getElementById("result").innerHTML=result;
+emoji = {
+    "가위": "✌️",
+    "바위": "✊",
+    "보": "✋"
 }
 
-function resetGame(){
+# 승패 판정 함수
+def judge(player, computer):
+    if player == computer:
+        return "무승부"
 
-    document.getElementById("resultArea").style.display="none";
-    document.getElementById("choices").style.display="none";
-    document.getElementById("startScreen").style.display="block";
+    if player == "가위":
+        if computer == "바위":
+            return "패배"
+        else:
+            return "승리"
 
-}
+    if player == "바위":
+        if computer == "가위":
+            return "승리"
+        else:
+            return "패배"
 
-</script>
+    if player == "보":
+        if computer == "가위":
+            return "패배"
+        else:
+            return "승리"
 
-</body>
-</html>
+# ---------------- 시작 화면 ----------------
+if st.session_state.screen == "start":
+
+    st.markdown("<h1>가위바위보 게임</h1>", unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([2,1,2])
+
+    with col2:
+        if st.button("시작하기"):
+            st.session_state.screen = "select"
+            st.rerun()
+
+# ---------------- 선택 화면 ----------------
+elif st.session_state.screen == "select":
+
+    st.markdown("<h2>무엇을 낼까요?</h2>", unsafe_allow_html=True)
+
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        if st.button("✌️", use_container_width=True):
+            st.session_state.player = "가위"
+
+    with c2:
+        if st.button("✊", use_container_width=True):
+            st.session_state.player = "바위"
+
+    with c3:
+        if st.button("✋", use_container_width=True):
+            st.session_state.player = "보"
+
+    if st.session_state.player != "":
+        st.session_state.computer = random.choice(["가위", "바위", "보"])
+        st.session_state.result = judge(
+            st.session_state.player,
+            st.session_state.computer
+        )
+        st.session_state.screen = "result"
+        st.rerun()
+
+# ---------------- 결과 화면 ----------------
+elif st.session_state.screen == "result":
+
+    st.markdown("<h2>컴퓨터</h2>", unsafe_allow_html=True)
+    st.markdown(
+        f"<h1 style='text-align:center'>{emoji[st.session_state.computer]}</h1>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f"<h2 style='text-align:center'>{st.session_state.result}</h2>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    st.markdown("<h2>나</h2>", unsafe_allow_html=True)
+    st.markdown(
+        f"<h1 style='text-align:center'>{emoji[st.session_state.player]}</h1>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    if st.button("돌아가기"):
+        st.session_state.screen = "start"
+        st.session_state.player = ""
+        st.session_state.computer = ""
+        st.session_state.result = ""
+        st.rerun()
