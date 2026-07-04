@@ -11,18 +11,39 @@ body {
     background-color: white;
     color: black;
 }
+
 .stApp {
     background-color: white;
 }
+
+/* 전체 텍스트 */
 h1, h2, h3, p {
     color: black;
     text-align: center;
 }
+
+/* 🔥 버튼 크기 크게 */
 div.stButton > button {
-    display: block;
-    margin: auto;
-    font-size: 24px;
-    padding: 10px 25px;
+    width: 180px;
+    height: 180px;
+    font-size: 90px;   /* 이모티콘 크기 */
+    border-radius: 25px;
+    border: 3px solid black;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* hover 효과 */
+div.stButton > button:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+/* 버튼 안 이모티콘 더 강조 */
+div.stButton > button p {
+    font-size: 90px !important;
 }
 </style>
 """, unsafe_allow_html=True)
